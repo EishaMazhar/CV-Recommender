@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
   Form,
   Icon,
@@ -31,7 +30,7 @@ class Login extends Component {
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
-      this.props.history.push("/todos");
+      this.props.history.push("/welcome");
     }
   }
 
@@ -39,7 +38,7 @@ class Login extends Component {
     if (idToken !== undefined) {
       localStorage.setItem("token", idToken);
       this.props.history.push({
-        pathname: "/todos"
+        pathname: "/welcome"
       });
     }
   };
