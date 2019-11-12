@@ -69,7 +69,7 @@ class Login extends Component {
     return (
       <div>
         <PageHeader className="Appheader">
-          <h1>CIRRICULUM VITAE RECOMMENDATION SYSTEM</h1>
+          <h1>CURRICULUM VITAE RECOMMENDATION SYSTEM</h1>
         </PageHeader>
         <Card
           title="LOGIN"

@@ -60,14 +60,22 @@ class Signup extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { Option } = Select;
+    const prefixSelector = getFieldDecorator("prefix", {
+      initialValue: "92"
+    })(
+      <Select style={{ width: 70 }}>
+        <Option value="92">+92</Option>
+      </Select>
+    );
+
     return (
       <div>
         <PageHeader className="Appheader">
-          <h1>CIRRICULUM VITAE RECOMMENDATION SYSTEM</h1>
+          <h1>CURRICULUM VITAE RECOMMENDATION SYSTEM</h1>
         </PageHeader>
         <Card
           title="Sign Up"
-          extra={<a href="#">More</a>}
+          // extra={<a href="#">More</a>}
           style={{
             width: "45%",
             margin: "50px auto",
@@ -123,7 +131,7 @@ class Signup extends Component {
             </div>
 
             <div className="formItems">
-              <Form.Item style={{ width: "48%" }}>
+              {/* <Form.Item style={{ width: "48%" }}>
                 {getFieldDecorator("username", {
                   rules: [
                     { required: true, message: "Please input your User Name!" }
@@ -139,6 +147,23 @@ class Signup extends Component {
                     onChange={this.onFormChange}
                   />
                 )}
+              </Form.Item> */}
+              <Form.Item style={{ width: "48%" }}>
+                {getFieldDecorator("phone", {
+                  rules: [
+                    {
+                      required: true,
+                      message: "Please input your phone number!"
+                    }
+                  ]
+                })(
+                  <Input
+                    placeholder="3332222222"
+                    maxLength={10}
+                    addonBefore={prefixSelector}
+                    style={{ width: "100%" }}
+                  />
+                )}
               </Form.Item>
               <Form.Item style={{ width: "48%" }}>
                 {getFieldDecorator("age", {
@@ -149,6 +174,8 @@ class Signup extends Component {
                     prefix={
                       <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                     }
+                    min={10}
+                    max={70}
                     placeholder="Age"
                     name="age"
                     setfieldsvalue={this.state.age}
@@ -157,23 +184,26 @@ class Signup extends Component {
                 )}
               </Form.Item>
             </div>
+            {/* //masla: type,gender,phone set nhi horaha */}
             <div className="formItems">
               <Form.Item style={{ width: "48%" }}>
-                {getFieldDecorator("email", {
+                {getFieldDecorator("type", {
                   rules: [
-                    { required: true, message: "Please input your E-mail!" }
+                    { required: true, message: "Please select your type!" }
                   ]
                 })(
-                  <Input
-                    type="email"
+                  <Select
+                    placeholder="Type"
+                    name="type"
+                    setfieldsvalue={this.state.type}
+                    onValuesChange={this.onFormChange}
                     prefix={
-                      <Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />
+                      <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                     }
-                    placeholder="E-mail"
-                    name="email"
-                    setfieldsvalue={this.state.email}
-                    onChange={this.onFormChange}
-                  />
+                  >
+                    <Option value="jobApplicant">Job Applicant</Option>
+                    <Option value="Recruiter">Recruiter</Option>
+                  </Select>
                 )}
               </Form.Item>
               {/* <Form.Item label="Gender" style={{ width: "45%" }}></Form.Item> */}
@@ -184,6 +214,9 @@ class Signup extends Component {
                   ]
                 })(
                   <Select
+                    prefix={
+                      <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
+                    }
                     placeholder="Gender"
                     name="gender"
                     setfieldsvalue={this.state.gender}
@@ -195,21 +228,26 @@ class Signup extends Component {
                 )}
               </Form.Item>
             </div>
+
             <Form.Item className="formItems">
-              {getFieldDecorator("type", {
-                rules: [{ required: true, message: "Please select your type!" }]
+              {getFieldDecorator("email", {
+                rules: [
+                  { required: true, message: "Please input your E-mail!" }
+                ]
               })(
-                <Select
-                  placeholder="Type"
-                  name="type"
-                  setfieldsvalue={this.state.type}
-                  onValuesChange={this.onFormChange}
-                >
-                  <Option value="jobApplicant">Job Applicant</Option>
-                  <Option value="Recruiter">Recruiter</Option>
-                </Select>
+                <Input
+                  type="email"
+                  prefix={
+                    <Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  placeholder="E-mail"
+                  name="email"
+                  setfieldsvalue={this.state.email}
+                  onChange={this.onFormChange}
+                />
               )}
             </Form.Item>
+
             <div className="formItems">
               <Form.Item style={{ width: "48%" }}>
                 {getFieldDecorator("password", {
