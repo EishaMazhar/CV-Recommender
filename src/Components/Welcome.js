@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Loader from "react-loader-spinner";
-import TypeButton from "./Button";
+import ModalButton from "./Common/ModalButton";
 
 import api_services from "../Services/api.services";
 import {
@@ -10,6 +10,7 @@ import {
   Select,
   DatePicker,
   Card,
+  Divider,
   PageHeader,
   message
 } from "antd";
@@ -127,13 +128,15 @@ class Welcome extends Component {
                   </Descriptions.Item>
                   <Descriptions.Item label="Age">20</Descriptions.Item>
                   <Descriptions.Item label="User Type">
-                    Recruiter
+                    {this.state.type}
                   </Descriptions.Item>
                 </Descriptions>
               </div>
 
+              <Divider />
+
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <TypeButton Usertype={this.state.type} />
+                <ModalButton Usertype={this.state.type} />
               </div>
             </Card>
           </div>
