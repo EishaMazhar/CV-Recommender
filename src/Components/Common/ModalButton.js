@@ -1,29 +1,64 @@
 import React, { Component } from "react";
-import { Button, Modal, Options } from "antd";
+import { Button, Modal, Options, message } from "antd";
 // import UserModal from "./Modal";
-
+import api_services from "../../Services/api.services";
 class ModalButton extends Component {
+  constructor(props) {
+    super(props);
+    this.api = new api_services();
+  }
   state = {
     type: this.props.Usertype,
     visible: false,
-    loading: false
+    loading: false,
+    file: null,
+    isError: false
   };
 
   showModal = () => {
     this.setState({
       visible: true
     });
-    console.log("button visible state  => ", this.state.visible);
   };
+
   handleOk = () => {
     this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, visible: false });
-    }, 3000);
+    if (!this.state.isError) {
+      setTimeout(() => {
+        this.setState({ loading: false, visible: false });
+      }, 300);
+    } else {
+      message.error("Not able to submit");
+    }
   };
 
   handleCancel = () => {
     this.setState({ visible: false });
+  };
+  HandleFile = e => {
+    let files = e.target.files;
+    let Reader = new FileReader();
+    Reader.readAsDataURL(files[0]);
+
+    console.log(files);
+
+    Reader.onload = e => {
+      e.preventDefault();
+      const token = localStorage.getItem("token");
+      // console.log("file data", e.target.result);
+      // this.setState({ file: e.target.result });
+      const formData = { file: e.target.result };
+      this.api
+        .postPDF(token, formData)
+        .then(() => {
+          message.success("file has been posted");
+          this.setState({ isError: false });
+        })
+        .catch(err => {
+          message.error("file not added");
+          this.setState({ isError: true });
+        });
+    };
   };
   render() {
     const { visible, loading } = this.state;
@@ -53,15 +88,12 @@ class ModalButton extends Component {
               </Button>
             ]}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <p>Put content here</p>
           </Modal>
           {/* <UserModal UserType={this.state.type} visible={this.state.visible} /> */}
         </div>
       );
+    //for non-recruiter/applicant
     else
       return (
         <div>
@@ -87,11 +119,13 @@ class ModalButton extends Component {
               </Button>
             ]}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <p>
+              <input
+                type="file"
+                name="file"
+                onChange={e => this.HandleFile(e)}
+              />
+            </p>
           </Modal>
           {/* <UserModal UserType={this.state.type} visible={this.state.visible} /> */}
         </div>

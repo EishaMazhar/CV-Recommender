@@ -27,7 +27,7 @@ class Welcome extends Component {
   }
   state = {
     isLoading: false,
-    type: "recruiter"
+    type: "applicant"
   };
 
   componentDidMount() {

@@ -34,7 +34,11 @@ class Signup extends Component {
     console.log(event.target.value);
     this.setState({ [event.target.name]: event.target.value });
   };
-
+  onDDGenFormChange = event => {
+    // console.log(event.target.name);
+    console.log(event);
+    this.setState({ gender: event });
+  };
   onPassword2Change = event => {
     this.setState({ [event.target.name]: event.target.value });
     if (this.state.password !== event.target.value) {
@@ -164,6 +168,7 @@ class Signup extends Component {
                   />
                 )}
               </Form.Item>
+
               <Form.Item style={{ width: "48%" }}>
                 {getFieldDecorator("age", {
                   rules: [{ required: true, message: "Please input your Age!" }]
@@ -227,7 +232,26 @@ class Signup extends Component {
                 )}
               </Form.Item>
             </div>
+            {/* 
+              //test patch  */}
 
+            <Select
+              showSearch
+              placeholder="Gender"
+              value={this.state.gender}
+              optionFilterProp="children"
+              onChange={this.onDDGenFormChange}
+              filterOption={(input, option) =>
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              <Option value="High">High</Option>
+              <Option value="Medium">Medium</Option>
+            </Select>
+            {/* 
+              //test patch end */}
             <Form.Item className="formItems">
               {getFieldDecorator("email", {
                 rules: [
