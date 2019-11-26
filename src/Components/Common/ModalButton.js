@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Button, Modal, Options, message } from "antd";
 // import UserModal from "./Modal";
 import api_services from "../../Services/api.services";
+import { withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
 class ModalButton extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +23,11 @@ class ModalButton extends Component {
       visible: true
     });
   };
-
+  showRecruiterPage = () => {
+    // return <Redirect to="/recruiter" />;
+    console.log(this.props.history);
+    this.props.history.push("/recruiter");
+  };
   handleOk = () => {
     this.setState({ loading: true });
     if (!this.state.isError) {
@@ -62,14 +69,22 @@ class ModalButton extends Component {
   };
   render() {
     const { visible, loading } = this.state;
-
+    console.log(this.props);
     if (this.state.type === "recruiter")
       return (
         <div>
-          <Button type="primary" size="large" onClick={this.showModal}>
+          <Button
+            type="primary"
+            size="large"
+            // onClick={() => this.props.history.push("/recruiter")}
+            onClick={() => this.showRecruiterPage()}
+          >
             Get Recommendation
           </Button>
-          <Modal
+
+          {/* //Recruiter Modal */}
+
+          {/* <Modal
             visible={visible}
             title="Post Job"
             onOk={this.handleOk}
@@ -89,7 +104,8 @@ class ModalButton extends Component {
             ]}
           >
             <p>Put content here</p>
-          </Modal>
+          </Modal> */}
+
           {/* <UserModal UserType={this.state.type} visible={this.state.visible} /> */}
         </div>
       );
@@ -133,4 +149,4 @@ class ModalButton extends Component {
   }
 }
 
-export default ModalButton;
+export default withRouter(ModalButton);

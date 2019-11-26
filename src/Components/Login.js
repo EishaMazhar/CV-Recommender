@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Form,
-  Icon,
-  Input,
-  Button,
-  // Checkbox,
-  PageHeader,
-  Card,
-  message
-} from "antd";
+import { Form, Icon, Input, Button, PageHeader, Card, message } from "antd";
 import { Link } from "react-router-dom";
 import api_services from "../Services/api.services";
 message.config({
