@@ -6,7 +6,21 @@ export default class api_services {
     return axios.post(`${API_URL}${LOGIN}`, values);
   };
 
-  signupUser = values => {};
+  signupUser = values => {
+    return axios.post(`${API_URL}`, values);
+  };
+
+  postJob = (token, values) => {
+    return (
+      axios.post(`${API_URL}`, values),
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  };
+
   postPDF = (token, formData) => {
     return axios.post(`${API_URL}`, formData, {
       headers: {

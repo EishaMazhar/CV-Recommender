@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import AddJob from "./AddJob";
 import {
   Input,
   Button,
@@ -7,6 +7,8 @@ import {
   Select,
   DatePicker,
   Card,
+  Form,
+  Icon,
   Divider,
   PageHeader,
   message
@@ -18,8 +20,18 @@ message.config({
 });
 
 class RecruiterPage extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    // this.api = new api_services();
+  }
+  state = {
+    // jobTitle: ""
+  };
   render() {
+    // console.log(this.props.form.getFieldDecorator);
+    // const { getFieldDecorator } = this.props.form;
+    // const { Option } = Select;
+
     return (
       <div>
         <div>
@@ -56,9 +68,7 @@ class RecruiterPage extends Component {
         <br />
         <div>
           <Card title="Add A Job" style={{ width: 300 }}>
-            <p>Card content</p>
-            <p>Card content</p>
-            <p>Card content</p>
+            <AddJob />
           </Card>
         </div>
       </div>
@@ -66,4 +76,4 @@ class RecruiterPage extends Component {
   }
 }
 
-export default withRouter(RecruiterPage);
+export default RecruiterPage;
