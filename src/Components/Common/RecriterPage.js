@@ -67,8 +67,21 @@ class RecruiterPage extends Component {
         </div>
         <br />
         <div>
-          <Card title="Add A Job" style={{ width: 300 }}>
+          <Card
+            title="Add A Job"
+            style={{ width: "75%", margin: "10px auto 0 auto" }}
+          >
             <AddJob />
+          </Card>
+          <Card
+            title="Recommendations"
+            style={{
+              width: "95%",
+              margin: "10px auto 0 auto",
+              padding: "5px 0 0 5px"
+            }}
+          >
+            No recommendations yet
           </Card>
         </div>
       </div>

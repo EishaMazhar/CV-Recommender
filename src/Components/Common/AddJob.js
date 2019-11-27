@@ -50,52 +50,48 @@ class AddJob extends Component {
 
     return (
       <Form layout="inline" onSubmit={this.handleSubmit}>
-        <div className="formItems">
-          <Form.Item style={{ width: "48%" }}>
-            {getFieldDecorator("jobTitle", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please input job title!"
-                }
-              ]
-            })(
-              <Input
-                prefix={
-                  <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                placeholder="Job Title"
-                name="jobTitle"
-                setfieldsvalue={this.state.jobTitle}
-                onChange={this.onFormChange}
-              />
-            )}
-          </Form.Item>
-          <Form.Item style={{ width: "48%" }}>
-            {" "}
-            {getFieldDecorator("empNo", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please enter number of employees!"
-                }
-              ]
-            })(
-              <InputNumber
-                min={1}
-                max={50}
-                // value={number.value}
-                // onChange={this.handleNumberChange}
-                placeholder="No of Employees"
-                name="EmpNo"
-                // setfieldsvalue={this.state.EmpNo}
-                // defaultValue={1}
-                onChange={this.onNoChange}
-              />
-            )}
-          </Form.Item>
-        </div>
-        <Form.Item style={{ width: "48%" }}>
+        <Form.Item>
+          {getFieldDecorator("jobTitle", {
+            rules: [
+              {
+                required: true,
+                message: "Please input job title!"
+              }
+            ]
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              placeholder="Job Title"
+              name="jobTitle"
+              setfieldsvalue={this.state.jobTitle}
+              onChange={this.onFormChange}
+            />
+          )}
+        </Form.Item>
+        <Form.Item style={{ width: "65" }}>
+          {" "}
+          {getFieldDecorator("empNo", {
+            rules: [
+              {
+                required: true,
+                message: "Please enter number of employees!"
+              }
+            ]
+          })(
+            <InputNumber
+              min={1}
+              max={50}
+              // value={number.value}
+              // onChange={this.handleNumberChange}
+              placeholder="No of Employees"
+              name="EmpNo"
+              // setfieldsvalue={this.state.EmpNo}
+              // defaultValue={1}
+              onChange={this.onNoChange}
+            />
+          )}
+        </Form.Item>
+        <Form.Item>
           {" "}
           {getFieldDecorator("JD", {
             rules: [
@@ -114,6 +110,7 @@ class AddJob extends Component {
             />
           )}
         </Form.Item>
+
         <Form.Item>
           <Button
             type="primary"

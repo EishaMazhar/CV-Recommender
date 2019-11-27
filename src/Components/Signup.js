@@ -11,10 +11,9 @@ class Signup extends Component {
   state = {
     firstname: "",
     lastname: "",
-    username: "",
     email: "",
     gender: "",
-    age: "",
+    age: null,
     type: "",
     password: "",
     password2: "",
@@ -30,23 +29,6 @@ class Signup extends Component {
     localStorage.setItem("token", idToken);
   };
 
-  onFormChange = event => {
-    console.log(event.target.value);
-    this.setState({ [event.target.name]: event.target.value });
-  };
-  onDDGenFormChange = event => {
-    // console.log(event.target.name);
-    console.log(event);
-    this.setState({ gender: event });
-  };
-  onPassword2Change = event => {
-    this.setState({ [event.target.name]: event.target.value });
-    if (this.state.password !== event.target.value) {
-      this.setState({ validatep2: false });
-    } else {
-      this.setState({ validatep2: true });
-    }
-  };
   handleSubmit = event => {
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -60,7 +42,28 @@ class Signup extends Component {
       }
     });
   };
+
+  onFormChange = event => {
+    console.log(event.target.value);
+    this.setState({ [event.target.name]: event.target.value });
+  };
+  onDDGenFormChange = event => {
+    // console.log(event.target.name);
+    this.setState({ gender: event });
+  };
+  onDDTypeFormChange = event => {
+    this.setState({ type: event });
+  };
+  onPassword2Change = event => {
+    this.setState({ [event.target.name]: event.target.value });
+    if (this.state.password !== event.target.value) {
+      this.setState({ validatep2: false });
+    } else {
+      this.setState({ validatep2: true });
+    }
+  };
   render() {
+    console.log(this.state);
     const { getFieldDecorator } = this.props.form;
     const { Option } = Select;
     const prefixSelector = getFieldDecorator("prefix", {
@@ -178,7 +181,7 @@ class Signup extends Component {
                     prefix={
                       <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                     }
-                    min={10}
+                    min={18}
                     max={70}
                     placeholder="Age"
                     name="age"
@@ -200,7 +203,7 @@ class Signup extends Component {
                     placeholder="Type"
                     name="type"
                     setfieldsvalue={this.state.type}
-                    onValuesChange={this.onFormChange}
+                    onChange={this.onDDTypeFormChange}
                     prefix={
                       <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                     }
@@ -224,7 +227,7 @@ class Signup extends Component {
                     placeholder="Gender"
                     name="gender"
                     setfieldsvalue={this.state.gender}
-                    onValuesChange={this.onFormChange}
+                    onChange={this.onDDGenFormChange}
                   >
                     <Option value="male">male</Option>
                     <Option value="female">female</Option>
@@ -232,26 +235,7 @@ class Signup extends Component {
                 )}
               </Form.Item>
             </div>
-            {/* 
-              //test patch  */}
 
-            <Select
-              showSearch
-              placeholder="Gender"
-              value={this.state.gender}
-              optionFilterProp="children"
-              onChange={this.onDDGenFormChange}
-              filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              <Option value="High">High</Option>
-              <Option value="Medium">Medium</Option>
-            </Select>
-            {/* 
-              //test patch end */}
             <Form.Item className="formItems">
               {getFieldDecorator("email", {
                 rules: [
