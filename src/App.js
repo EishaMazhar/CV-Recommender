@@ -7,6 +7,7 @@ import "./App.css";
 import Signup from "./Components/Signup";
 import Welcome from "./Components/Welcome";
 import RecruiterPage from "./Components/Common/RecriterPage";
+import ShowRecommendations from "./Components/Common/ShowRecommendations";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/" component={Login} />
         <Route exact path="/welcome" component={Welcome} />
         <Route exact path="/recruiter" component={RecruiterPage} />
+        <Route exact path="/recommendations" component={ShowRecommendations} />
       </Router>
     </div>
   );

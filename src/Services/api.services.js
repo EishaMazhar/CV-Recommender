@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL, SIGNUP, LOGIN } from "../Constants";
+import { API_URL, SIGNUP, LOGIN, POST_JOB } from "../Constants";
 
 export default class api_services {
   LoginUser = values => {
@@ -11,21 +11,28 @@ export default class api_services {
   };
 
   postJob = (token, values) => {
-    return (
-      axios.post(`${API_URL}`, values),
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    return axios.post(`${API_URL}${POST_JOB}`, values, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
   };
-
+  deleteJob = (id, token) => {
+    return axios.delete(`${API_URL}${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  };
   postPDF = (token, formData) => {
     return axios.post(`${API_URL}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+  };
+
+  getrecommendations = (jobid, token) => {
+    return axios.get(`${API_URL}`);
   };
 }

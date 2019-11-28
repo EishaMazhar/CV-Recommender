@@ -35,10 +35,13 @@ class AddJob extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log(values);
-        // this.api
-        //   .postJob(token,values)
-        //   .then(val => this.props.history.push("/"))
-        //   .catch(err => console.log(err));
+        this.api
+          .postJob(values)
+          .then(val => {
+            console.log(val);
+            // this.props.history.push("/");
+          })
+          .catch(err => console.log(err));
       }
     });
   };
