@@ -1,8 +1,8 @@
 module.exports = {
-  API_URL: "https://127.0.0.1:5000/",
-  SIGNUP: "profile/signup",
-  LOGIN: "profile/login",
+  API_URL: "http://127.0.0.1:5000/",
+  SIGNUP: "signup",
+  LOGIN: "login",
   PROFILE: "profile",
-  POST_JOB: "profile/postjob",
+  POST_JOB: "jobpost",
   POST_CV: "/submitCV"
 };

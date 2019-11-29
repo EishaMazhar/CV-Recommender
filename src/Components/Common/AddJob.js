@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import api_services from "../../Services/api.services";
 import {
   Input,
   Button,
@@ -20,21 +21,25 @@ message.config({
 });
 
 class AddJob extends Component {
+  constructor(props) {
+    super(props);
+    this.api = new api_services();
+  }
   state = { jobTitle: "", EmpNo: 0, JD: "" };
 
   onNoChange = val => {
-    console.log(val);
+    // console.log(val);
     this.setState({ EmpNo: val });
   };
   onFormChange = event => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     this.setState({ [event.target.name]: event.target.value });
   };
   handleSubmit = event => {
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
+        console.log("values to be posted", values);
         this.api
           .postJob(values)
           .then(val => {
@@ -49,7 +54,7 @@ class AddJob extends Component {
     const { TextArea } = Input;
     const { getFieldDecorator } = this.props.form;
     const { Option } = Select;
-    console.log(this.state);
+    // console.log(this.state);
 
     return (
       <Form layout="inline" onSubmit={this.handleSubmit}>
