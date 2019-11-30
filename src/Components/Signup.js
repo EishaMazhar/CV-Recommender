@@ -14,6 +14,7 @@ class Signup extends Component {
     email: "",
     gender: "",
     age: null,
+    phone: "",
     type: "",
     password: "",
     password2: "",
@@ -34,9 +35,34 @@ class Signup extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (this.state.validatep2) {
+          const obj = {
+            firstname: values.firstname,
+            lastname: values.lastname,
+            email: values.email,
+            gender: values.gender,
+            age: values.age,
+            phone: values.prefix + values.phone,
+            type: values.type,
+            password: values.password
+          };
+          console.log("this is being sent at backend", obj);
           this.api
-            .signupUser(values)
-            .then(val => this.props.history.push("/"))
+            .signupUser(obj)
+            .then(val => {
+              this.props.history.push("/");
+              this.setState({
+                firstname: "",
+                lastname: "",
+                email: "",
+                gender: "",
+                age: null,
+                phone: "",
+                type: "",
+                password: "",
+                password2: "",
+                validatep2: true
+              });
+            })
             .catch(err => console.log(err));
         }
       }
@@ -63,7 +89,7 @@ class Signup extends Component {
     }
   };
   render() {
-    console.log(this.state);
+    console.log("this is state", this.state);
     const { getFieldDecorator } = this.props.form;
     const { Option } = Select;
     const prefixSelector = getFieldDecorator("prefix", {
@@ -168,6 +194,9 @@ class Signup extends Component {
                     maxLength={10}
                     addonBefore={prefixSelector}
                     style={{ width: "100%" }}
+                    name="phone"
+                    setfieldsvalue={this.state.phone}
+                    onChange={this.onFormChange}
                   />
                 )}
               </Form.Item>
