@@ -21,14 +21,29 @@ message.config({
 
 class ShowRecommendations extends Component {
   state = {
+    loading: true,
     list: [
-      { name: "Eisha", empNo: 3 },
-      { name: "Talha", empNo: 5 },
-      { name: "Taha", empNo: 2 },
-      { name: "Unaiz", empNo: 2 }
+      { id: 1, name: "Eisha", empNo: 3 },
+      { id: 2, name: "Talha", empNo: 5 },
+      { id: 3, name: "Taha", empNo: 2 },
+      { id: 4, name: "Unaiz", empNo: 2 }
     ]
   };
-
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    // this.api
+    //   .getrecommendations(id, token)
+    //   .then(val => this.setState({ profile: val.data, isLoading: false }))
+    //   .catch(err => console.log(err));
+    // if (!token) {
+    //   this.props.history.push("/login");
+    // }
+    // this.api
+    //   .getItems(token)
+    //   .then(val => this.setState({ list: val.data }))
+    //   .then(message.success("You are all set"))
+    //   .catch(err => message.error("Error while fetching Items"));
+  }
   RecommendationsList = () =>
     this.state.list.map((i, key) => {
       return (
@@ -51,16 +66,6 @@ class ShowRecommendations extends Component {
             <h3>{i.name}</h3>
             <p>k17xxxx@nu.edu.pk</p>
             <p>Show pdf here</p>
-            {/* <Button
-              type="primary"
-              onClick={() => this.recommend(i._id, i.name)}
-              style={{ margin: "0 5px 0 0px" }}
-            >
-              Recommendations
-            </Button>
-            <Button type="danger" onClick={() => this.onDelete(i._id)}>
-              Delete
-            </Button> */}
           </Card.Grid>
         </div>
       );
@@ -70,6 +75,7 @@ class ShowRecommendations extends Component {
     console.log(this.props.location.state);
     return (
       <div>
+        \
         <div>
           <PageHeader className="Appheader">
             <h1>CURRICULUM VITAE RECOMMENDER</h1>

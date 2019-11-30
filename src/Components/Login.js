@@ -5,7 +5,7 @@ import api_services from "../Services/api.services";
 message.config({
   top: 100,
   duration: 5,
-  maxCount: 3
+  maxCount: 5
 });
 
 class Login extends Component {
@@ -42,10 +42,13 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        //console.log("Received values of form: ", values);
+        console.log("login form values", values);
         this.api
           .LoginUser(values)
-          .then(val => this.setToken(val.data.token))
+          .then(val => {
+            console.log(val.data);
+            this.setToken(val.data.token);
+          })
           .catch(err => message.error("Incorrect username or password"));
       }
     });

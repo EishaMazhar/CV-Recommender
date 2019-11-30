@@ -1,7 +1,21 @@
 import React, { Component } from "react";
-import { Form, Icon, Card, Input, Button, PageHeader, Select } from "antd";
+import {
+  Form,
+  Icon,
+  Card,
+  Input,
+  Button,
+  PageHeader,
+  Select,
+  message
+} from "antd";
 import { Link } from "react-router-dom";
 import api_services from "../Services/api.services";
+message.config({
+  top: 100,
+  duration: 4,
+  maxCount: 3
+});
 
 class Signup extends Component {
   constructor(props) {
@@ -49,7 +63,7 @@ class Signup extends Component {
           this.api
             .signupUser(obj)
             .then(val => {
-              this.props.history.push("/");
+              message.success("Account Registered");
               this.setState({
                 firstname: "",
                 lastname: "",
@@ -62,6 +76,7 @@ class Signup extends Component {
                 password2: "",
                 validatep2: true
               });
+              this.props.history.push("/");
             })
             .catch(err => console.log(err));
         }

@@ -7,7 +7,7 @@ export default class api_services {
   };
 
   signupUser = values => {
-    return axios.post(`${API_URL}`, values);
+    return axios.post(`${API_URL}${SIGNUP}`, values);
   };
 
   postJob = values => {
