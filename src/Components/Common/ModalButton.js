@@ -70,7 +70,7 @@ class ModalButton extends Component {
   render() {
     const { visible, loading } = this.state;
     console.log(this.props);
-    if (this.state.type === "recruiter")
+    if (this.state.type === "Recruiter")
       return (
         <div>
           <Button

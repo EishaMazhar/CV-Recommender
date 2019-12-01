@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Loader from "react-loader-spinner";
 import ModalButton from "./Common/ModalButton";
-
+import jwt_decode from "jwt-decode";
 import api_services from "../Services/api.services";
 import {
   Input,
@@ -27,28 +27,48 @@ class Welcome extends Component {
   }
   state = {
     isLoading: false,
-    type: "recruiter"
+    type: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+    gender: "",
+    age: "",
+    phone: ""
   };
+  // componentDidMount() {
+  //   const token = localStorage.getItem("token");
+  // this.setState({ isLoading: false });
+  // this.api
+  //   .getProfile(token)
+  //   .then(val => this.setState({ profile: val.data, isLoading: false }))
+  //   .catch(err => console.log(err));
 
-  componentDidMount() {
-    const token = localStorage.getItem("token");
-
-    // this.setState({ isLoading: false });
-    // this.api
-    //   .getProfile(token)
-    //   .then(val => this.setState({ profile: val.data, isLoading: false }))
-    //   .catch(err => console.log(err));
-
-    // if (!token) {
-    //   this.props.history.push("/");
-    // }
-  }
+  // if (!token) {
+  //   this.props.history.push("/");
+  // }
+  // }
 
   // successAdd = () => {
   //   this.setState({ isAdded: false });
   //   message.success("Task Added");
   // };
+  componentDidMount() {
+    const token = localStorage.getItem("token");
 
+    const decoded = jwt_decode(token);
+    this.setState({
+      firstname: decoded.identity.firstname,
+      lastname: decoded.identity.lastname,
+      email: decoded.identity.email,
+      type: decoded.identity.usertype,
+      gender: decoded.identity.gender,
+      age: decoded.identity.age,
+      phone: decoded.identity.phone
+    });
+    if (!token) {
+      this.props.history.push("/");
+    }
+  }
   removeToken = () => {
     localStorage.removeItem("token");
     this.props.history.push("/");
@@ -57,7 +77,7 @@ class Welcome extends Component {
   render() {
     // const { getFieldDecorator } = this.props.form;
     // const { Option } = Select;
-
+    console.log(this.state);
     if (this.state.isLoading) {
       return (
         <div>

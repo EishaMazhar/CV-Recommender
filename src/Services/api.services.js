@@ -10,13 +10,11 @@ export default class api_services {
     return axios.post(`${API_URL}${SIGNUP}`, values);
   };
 
-  postJob = values => {
+  postJob = (values, token) => {
     console.log("In post job function", values);
-    return axios.post(`${API_URL}${POST_JOB}`, values);
-    //   headers: {
-    //     Authorization: `Bearer ${token}`
-    //   }
-    // });
+    return axios.post(`${API_URL}${POST_JOB}`, values, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
   };
   deleteJob = (id, token) => {
     return axios.delete(`${API_URL}${id}`, {

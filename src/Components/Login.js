@@ -46,7 +46,7 @@ class Login extends Component {
         this.api
           .LoginUser(values)
           .then(val => {
-            console.log(val.data);
+            console.log(val);
             this.setToken(val.data.token);
           })
           .catch(err => message.error("Incorrect username or password"));

@@ -178,23 +178,7 @@ class Signup extends Component {
             </div>
 
             <div className="formItems">
-              {/* <Form.Item style={{ width: "48%" }}>
-                {getFieldDecorator("username", {
-                  rules: [
-                    { required: true, message: "Please input your User Name!" }
-                  ]
-                })(
-                  <Input
-                    prefix={
-                      <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                    }
-                    placeholder="User Name"
-                    name="username"
-                    setfieldsvalue={this.state.username}
-                    onChange={this.onFormChange}
-                  />
-                )}
-              </Form.Item> */}
+         
               <Form.Item style={{ width: "48%" }}>
                 {getFieldDecorator("phone", {
                   rules: [
@@ -235,7 +219,6 @@ class Signup extends Component {
                 )}
               </Form.Item>
             </div>
-            {/* //masla: type,gender,phone set nhi horaha */}
             <div className="formItems">
               <Form.Item style={{ width: "48%" }}>
                 {getFieldDecorator("type", {
