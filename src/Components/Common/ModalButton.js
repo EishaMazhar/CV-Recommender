@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Modal, Options, message } from "antd";
 // import UserModal from "./Modal";
 import api_services from "../../Services/api.services";
+import jwt_decode from "jwt-decode";
 import { withRouter } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 
@@ -11,20 +12,23 @@ class ModalButton extends Component {
     this.api = new api_services();
   }
   state = {
-    type: this.props.Usertype,
+    type: this.props.type,
     visible: false,
     loading: false,
     file: null,
-    isError: false
+    isError: false,
+    profile: ""
   };
-
+  getmytype = () => {
+    this.setState({ type: this.props.type });
+    console.log("component did mount props", this.props.type);
+  };
   showModal = () => {
     this.setState({
       visible: true
     });
   };
   showRecruiterPage = () => {
-    // return <Redirect to="/recruiter" />;
     console.log(this.props.history);
     this.props.history.push("/recruiter");
   };
@@ -43,33 +47,46 @@ class ModalButton extends Component {
     this.setState({ visible: false });
   };
   HandleFile = e => {
-    let files = e.target.files;
-    let Reader = new FileReader();
-    Reader.readAsDataURL(files[0]);
+    // console.log("file event", e);
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token);
+    let email = decoded.identity.email;
 
-    console.log(files);
+    let formData = new FormData();
+    let file = e.target.files[0];
+    console.log("file ===> ", file);
+    formData.append("file", file);
 
-    Reader.onload = e => {
-      e.preventDefault();
-      const token = localStorage.getItem("token");
-      // console.log("file data", e.target.result);
-      // this.setState({ file: e.target.result });
-      const formData = { file: e.target.result };
-      this.api
-        .postPDF(token, formData)
-        .then(() => {
-          message.success("file has been posted");
-          this.setState({ isError: false });
-        })
-        .catch(err => {
-          message.error("file not added");
-          this.setState({ isError: true });
-        });
-    };
+    // let Reader = new FileReader();
+    // Reader.readAsDataURL(files[0]);
+
+    console.log("form data e.target.files[0]", formData);
+
+    // Reader.onload = e => {
+
+    //   e.preventDefault();
+
+    //   const formData = { file: e.target.result };
+
+    // console.log("e.target.file[0] => ", e.target.files[0]);
+
+    this.api
+      .postPDF(email, formData)
+      .then(() => {
+        message.success("file has been posted");
+        this.setState({ isError: false, visible: false });
+      })
+      .catch(err => {
+        message.error("file not added");
+        this.setState({ isError: true });
+      });
+    // };
   };
   render() {
     const { visible, loading } = this.state;
-    console.log(this.props);
+    console.log("modal button props received", this.props.type);
+    console.log("modal button state", this.state);
+    if (!this.state.type) return <div>{this.getmytype()}</div>;
     if (this.state.type === "Recruiter")
       return (
         <div>
@@ -81,36 +98,9 @@ class ModalButton extends Component {
           >
             Get Recommendation
           </Button>
-
-          {/* //Recruiter Modal */}
-
-          {/* <Modal
-            visible={visible}
-            title="Post Job"
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-            footer={[
-              <Button key="back" onClick={this.handleCancel}>
-                Return
-              </Button>,
-              <Button
-                key="submit"
-                type="primary"
-                loading={loading}
-                onClick={this.handleOk}
-              >
-                Submit
-              </Button>
-            ]}
-          >
-            <p>Put content here</p>
-          </Modal> */}
-
-          {/* <UserModal UserType={this.state.type} visible={this.state.visible} /> */}
         </div>
       );
-    //for non-recruiter/applicant
-    else
+    else if (this.state.type === "jobApplicant")
       return (
         <div>
           <Button type="primary" size="large" onClick={this.showModal}>
@@ -119,20 +109,19 @@ class ModalButton extends Component {
           <Modal
             visible={visible}
             title="Request Job"
-            onOk={this.handleOk}
+            // onOk={this.handleOk}
             onCancel={this.handleCancel}
             footer={[
               <Button key="back" onClick={this.handleCancel}>
-                Return
-              </Button>,
-              <Button
-                key="submit"
-                type="primary"
-                loading={loading}
-                onClick={this.handleOk}
-              >
-                Submit
+                return
               </Button>
+              // <Button
+              //   key="submit"
+              //   type="primary"
+              //   loading={loading}
+              //   onClick={this.handleOk}>
+              //   Submit
+              // </Button>
             ]}
           >
             <p>
@@ -143,7 +132,7 @@ class ModalButton extends Component {
               />
             </p>
           </Modal>
-          {/* <UserModal UserType={this.state.type} visible={this.state.visible} /> */}
+          {/* <UserModal type={this.state.type} visible={this.state.visible} /> */}
         </div>
       );
   }

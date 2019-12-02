@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import AddJob from "./AddJob";
+import jwt_decode from "jwt-decode";
 import api_services from "../../Services/api.services";
 import {
   Input,
@@ -25,18 +27,41 @@ class RecruiterPage extends Component {
     super(props);
     this.api = new api_services();
   }
+  removeToken = () => {
+    localStorage.removeItem("token");
+    this.props.history.push("/");
+  };
   state = {
     // jobTitle: ""
-    list: [
-      { name: "Software Engineer", empNo: 3 },
-      { name: "Web Developer", empNo: 5 },
-      { name: "Marketer", empNo: 2 }
-    ]
+    list: [],
+    isAdded: false
+  };
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const decoded = jwt_decode(token);
+    let email = decoded.identity.email;
+    this.api
+      .GetAllJobs(email)
+      .then(res => {
+        console.log("get all job response", res.data);
+        this.setState({
+          list: res.data
+        });
+      })
+      .catch(err => console.log(err));
+  }
+  InsertIntoList = newJob => {
+    console.log("new job fun", newJob);
+    this.setState({ list: this.state.list.concat(newJob), isAdded: true });
   };
   onDelete = id => {
     const token = localStorage.getItem("token");
+    console.log(token);
+    const decoded = jwt_decode(token);
+    let email = decoded.identity.email;
     this.api
-      .deleteJob(id, token)
+      .deleteJob(id, email)
       .then(val => {
         this.setState({
           list: this.state.list.filter(item => item._id !== id)
@@ -56,6 +81,7 @@ class RecruiterPage extends Component {
 
   getjobsList = () =>
     this.state.list.map((i, key) => {
+      console.log(i[key]);
       return (
         <div
           key={key}
@@ -73,11 +99,12 @@ class RecruiterPage extends Component {
             {/* <h3>{i.name}</h3>
           <p>{i.email}</p>
           <p>{i.priority}</p> */}
-            <h3>{i.name}</h3>
-            <p>No of employees: {i.empNo}</p>
+            <h3>{i.job_title}</h3>
+
+            <p>No of employees: {i.cand}</p>
             <Button
               type="primary"
-              onClick={() => this.recommend(i._id, i.name)}
+              onClick={() => this.recommend(i._id, i.job_title, i.jp_email)}
               style={{ margin: "0 5px 0 0px" }}
             >
               Recommendations
@@ -95,6 +122,7 @@ class RecruiterPage extends Component {
     // const { getFieldDecorator } = this.props.form;
     // const { Option } = Select;
 
+    console.log("states of recruiter component", this.state);
     return (
       <div>
         <div>
@@ -134,7 +162,7 @@ class RecruiterPage extends Component {
             title="Add A Job"
             style={{ width: "75%", margin: "10px auto 0 auto" }}
           >
-            <AddJob />
+            <AddJob InsertIntoList={this.InsertIntoList} />
           </Card>
           <Card
             title="My jobs"
@@ -152,4 +180,4 @@ class RecruiterPage extends Component {
   }
 }
 
-export default RecruiterPage;
+export default withRouter(RecruiterPage);

@@ -1,19 +1,7 @@
 import React, { Component } from "react";
 import api_services from "../../Services/api.services";
-import {
-  Input,
-  Button,
-  Descriptions,
-  Select,
-  DatePicker,
-  Card,
-  Form,
-  Icon,
-  Divider,
-  PageHeader,
-  InputNumber,
-  message
-} from "antd";
+import jwt_decode from "jwt-decode";
+import { Input, Button, Select, Form, Icon, message, InputNumber } from "antd";
 message.config({
   top: 100,
   duration: 5,
@@ -25,8 +13,12 @@ class AddJob extends Component {
     super(props);
     this.api = new api_services();
   }
-  state = { jobTitle: "", EmpNo: 0, JD: "" };
 
+  state = {
+    jobTitle: "",
+    EmpNo: "",
+    JD: ""
+  };
   onNoChange = val => {
     // console.log(val);
     this.setState({ EmpNo: val });
@@ -37,14 +29,17 @@ class AddJob extends Component {
   };
   handleSubmit = event => {
     event.preventDefault();
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const decoded = jwt_decode(token);
+    let email = decoded.identity.email;
+
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("values to be posted", values);
         this.api
-          .postJob(values)
+          .postJob(values, email)
           .then(val => {
-            console.log(val);
-            // this.props.history.push("/");
+            this.props.InsertIntoList(val.data.result);
           })
           .catch(err => console.log(err));
       }
@@ -54,8 +49,7 @@ class AddJob extends Component {
     const { TextArea } = Input;
     const { getFieldDecorator } = this.props.form;
     const { Option } = Select;
-    // console.log(this.state);
-
+    console.log("my add job states", this.states);
     return (
       <Form layout="inline" onSubmit={this.handleSubmit}>
         <Form.Item>
@@ -89,12 +83,8 @@ class AddJob extends Component {
             <InputNumber
               min={1}
               max={50}
-              // value={number.value}
-              // onChange={this.handleNumberChange}
               placeholder="No of Employees"
               name="EmpNo"
-              // setfieldsvalue={this.state.EmpNo}
-              // defaultValue={1}
               onChange={this.onNoChange}
             />
           )}

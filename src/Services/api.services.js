@@ -1,5 +1,13 @@
 import axios from "axios";
-import { API_URL, SIGNUP, LOGIN, POST_JOB } from "../Constants";
+import {
+  API_URL,
+  SIGNUP,
+  LOGIN,
+  POST_JOB,
+  ALL_JOBS,
+  DELETE_JOB,
+  POST_CV
+} from "../Constants";
 
 export default class api_services {
   LoginUser = values => {
@@ -10,23 +18,31 @@ export default class api_services {
     return axios.post(`${API_URL}${SIGNUP}`, values);
   };
 
-  postJob = (values, token) => {
-    console.log("In post job function", values);
+  postJob = (values, email) => {
+    console.log("In post job function", values, email);
     return axios.post(`${API_URL}${POST_JOB}`, values, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: email }
     });
   };
-  deleteJob = (id, token) => {
-    return axios.delete(`${API_URL}${id}`, {
+
+  GetAllJobs = email => {
+    console.log("In post job function", email);
+    return axios.get(`${API_URL}${ALL_JOBS}`, {
+      headers: { Authorization: email }
+    });
+  };
+
+  deleteJob = (id, email) => {
+    return axios.delete(`${API_URL}${DELETE_JOB}${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: email
       }
     });
   };
-  postPDF = (token, formData) => {
-    return axios.post(`${API_URL}`, formData, {
+  postPDF = (email, myfile) => {
+    return axios.post(`${API_URL}${POST_CV}`, myfile, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: email
       }
     });
   };

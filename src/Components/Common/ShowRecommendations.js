@@ -31,6 +31,7 @@ class ShowRecommendations extends Component {
   };
   componentDidMount() {
     const token = localStorage.getItem("token");
+    console.log("in recommendations page", this.props.location.state);
     // this.api
     //   .getrecommendations(id, token)
     //   .then(val => this.setState({ profile: val.data, isLoading: false }))
@@ -38,12 +39,17 @@ class ShowRecommendations extends Component {
     // if (!token) {
     //   this.props.history.push("/login");
     // }
+
     // this.api
     //   .getItems(token)
     //   .then(val => this.setState({ list: val.data }))
     //   .then(message.success("You are all set"))
     //   .catch(err => message.error("Error while fetching Items"));
   }
+  removeToken = () => {
+    localStorage.removeItem("token");
+    this.props.history.push("/");
+  };
   RecommendationsList = () =>
     this.state.list.map((i, key) => {
       return (

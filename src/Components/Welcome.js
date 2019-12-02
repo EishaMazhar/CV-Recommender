@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Loader from "react-loader-spinner";
+import { withRouter } from "react-router-dom";
 import ModalButton from "./Common/ModalButton";
 import jwt_decode from "jwt-decode";
 import api_services from "../Services/api.services";
@@ -33,30 +34,20 @@ class Welcome extends Component {
     email: "",
     gender: "",
     age: "",
-    phone: ""
+    phone: "",
+    profile: ""
   };
-  // componentDidMount() {
-  //   const token = localStorage.getItem("token");
-  // this.setState({ isLoading: false });
-  // this.api
-  //   .getProfile(token)
-  //   .then(val => this.setState({ profile: val.data, isLoading: false }))
-  //   .catch(err => console.log(err));
-
-  // if (!token) {
-  //   this.props.history.push("/");
-  // }
-  // }
 
   // successAdd = () => {
   //   this.setState({ isAdded: false });
   //   message.success("Task Added");
   // };
+
   componentDidMount() {
     const token = localStorage.getItem("token");
 
     const decoded = jwt_decode(token);
-    this.setState({
+    const obj = {
       firstname: decoded.identity.firstname,
       lastname: decoded.identity.lastname,
       email: decoded.identity.email,
@@ -64,6 +55,16 @@ class Welcome extends Component {
       gender: decoded.identity.gender,
       age: decoded.identity.age,
       phone: decoded.identity.phone
+    };
+    this.setState({
+      firstname: decoded.identity.firstname,
+      lastname: decoded.identity.lastname,
+      email: decoded.identity.email,
+      type: decoded.identity.usertype,
+      gender: decoded.identity.gender,
+      age: decoded.identity.age,
+      phone: decoded.identity.phone,
+      profile: obj
     });
     if (!token) {
       this.props.history.push("/");
@@ -77,14 +78,15 @@ class Welcome extends Component {
   render() {
     // const { getFieldDecorator } = this.props.form;
     // const { Option } = Select;
-    console.log(this.state);
+
     if (this.state.isLoading) {
       return (
         <div>
           <Loader type="Circles" color="grey" height="100vh" width={100} />
         </div>
       );
-    } else
+    } else {
+      console.log("my states in welcome", this.state);
       return (
         <div>
           {/* {this.state.isAdded ? this.successAdd() : ""}
@@ -134,19 +136,23 @@ class Welcome extends Component {
               <div>
                 <Descriptions>
                   <Descriptions.Item label="First Name">
-                    Eisha
+                    {this.state.firstname}
                   </Descriptions.Item>
                   <Descriptions.Item label="Last Name">
-                    Tir Raazia
+                    {this.state.lastname}
                   </Descriptions.Item>
                   <Descriptions.Item label="Telephone">
-                    033333333333
+                    {this.state.phone}
                   </Descriptions.Item>
-                  <Descriptions.Item label="Gender">Female</Descriptions.Item>
+                  <Descriptions.Item label="Gender">
+                    {this.state.gender}
+                  </Descriptions.Item>
                   <Descriptions.Item label="Email">
-                    k173730@nu.edu.pk
+                    {this.state.email}
                   </Descriptions.Item>
-                  <Descriptions.Item label="Age">20</Descriptions.Item>
+                  <Descriptions.Item label="Age">
+                    {this.state.age}
+                  </Descriptions.Item>
                   <Descriptions.Item label="User Type">
                     {this.state.type}
                   </Descriptions.Item>
@@ -156,13 +162,17 @@ class Welcome extends Component {
               <Divider />
 
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <ModalButton Usertype={this.state.type} />
+                <ModalButton
+                  type={this.state.type}
+                  profile={this.state.profile}
+                />
               </div>
             </Card>
           </div>
         </div>
       );
+    }
   }
 }
 
-export default Welcome;
+export default withRouter(Welcome);

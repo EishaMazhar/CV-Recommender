@@ -8,6 +8,7 @@ import Signup from "./Components/Signup";
 import Welcome from "./Components/Welcome";
 import RecruiterPage from "./Components/Common/RecriterPage";
 import ShowRecommendations from "./Components/Common/ShowRecommendations";
+import { Modal } from "antd";
 
 function App() {
   return (

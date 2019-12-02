@@ -59,7 +59,6 @@ class Signup extends Component {
             type: values.type,
             password: values.password
           };
-          console.log("this is being sent at backend", obj);
           this.api
             .signupUser(obj)
             .then(val => {
