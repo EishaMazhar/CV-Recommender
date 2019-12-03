@@ -6,6 +6,7 @@ import {
   POST_JOB,
   ALL_JOBS,
   DELETE_JOB,
+  GET_RECOMMENDATION,
   POST_CV
 } from "../Constants";
 
@@ -47,7 +48,7 @@ export default class api_services {
     });
   };
 
-  getrecommendations = (jobid, token) => {
-    return axios.get(`${API_URL}`);
+  getrecommendations = jobid => {
+    return axios.get(`${API_URL}${GET_RECOMMENDATION}`, jobid);
   };
 }

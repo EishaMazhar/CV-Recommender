@@ -6,5 +6,6 @@ module.exports = {
   POST_JOB: "jobpost",
   POST_CV: "submitCV",
   ALL_JOBS: "allJds",
-  DELETE_JOB: "delJd/"
+  DELETE_JOB: "delJd/",
+  GET_RECOMMENDATION: "recommend"
 };
