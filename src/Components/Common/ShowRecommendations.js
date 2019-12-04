@@ -1,18 +1,6 @@
 import React, { Component } from "react";
 import api_services from "../../Services/api.services";
-import {
-  Input,
-  Button,
-  Descriptions,
-  Select,
-  DatePicker,
-  Card,
-  Form,
-  Icon,
-  Divider,
-  PageHeader,
-  message
-} from "antd";
+import { Input, Button, Card, PageHeader, message } from "antd";
 message.config({
   top: 100,
   duration: 5,
@@ -20,25 +8,28 @@ message.config({
 });
 
 class ShowRecommendations extends Component {
+  constructor(props) {
+    super(props);
+    this.api = new api_services();
+  }
   state = {
     loading: true,
-    list: [
-      { id: 1, name: "Eisha", empNo: 3 },
-      { id: 2, name: "Talha", empNo: 5 },
-      { id: 3, name: "Taha", empNo: 2 },
-      { id: 4, name: "Unaiz", empNo: 2 }
-    ]
+    profile: "",
+    list: []
   };
   componentDidMount() {
     const token = localStorage.getItem("token");
     console.log("in recommendations page", this.props.location.state);
-    // this.api
-    //   .getrecommendations(id, token)
-    //   .then(val => this.setState({ profile: val.data, isLoading: false }))
-    //   .catch(err => console.log(err));
-    // if (!token) {
-    //   this.props.history.push("/login");
-    // }
+    this.api
+      .getrecommendations(this.props.location.state)
+      .then(val => {
+        this.setState({ list: val.data, isLoading: false });
+        console.log("recommendation response", val);
+      })
+      .catch(err => console.log(err));
+    if (!token) {
+      this.props.history.push("/login");
+    }
 
     // this.api
     //   .getItems(token)
@@ -67,11 +58,11 @@ class ShowRecommendations extends Component {
             }}
           >
             {/* <h3>{i.name}</h3>
-        <p>{i.email}</p>
-        <p>{i.priority}</p> */}
+          <p>{i.email}</p>
+          <p>{i.priority}</p> */}
             <h3>{i.name}</h3>
-            <p>k17xxxx@nu.edu.pk</p>
-            <p>Show pdf here</p>
+            <p>{i.email}</p>
+            <p>Score: {i.score}</p>
           </Card.Grid>
         </div>
       );
@@ -81,7 +72,6 @@ class ShowRecommendations extends Component {
     console.log(this.props.location.state);
     return (
       <div>
-        \
         <div>
           <PageHeader className="Appheader">
             <h1>CURRICULUM VITAE RECOMMENDER</h1>

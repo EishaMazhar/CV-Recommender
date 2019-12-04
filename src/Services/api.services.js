@@ -49,6 +49,10 @@ export default class api_services {
   };
 
   getrecommendations = jobid => {
-    return axios.get(`${API_URL}${GET_RECOMMENDATION}`, jobid);
+    return axios.get(`${API_URL}${GET_RECOMMENDATION}`, {
+      headers: {
+        Authorization: JSON.stringify(jobid)
+      }
+    });
   };
 }

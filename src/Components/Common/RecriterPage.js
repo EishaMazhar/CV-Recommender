@@ -32,15 +32,16 @@ class RecruiterPage extends Component {
     this.props.history.push("/");
   };
   state = {
-    // jobTitle: ""
     list: [],
-    isAdded: false
+    isAdded: false,
+    email: ""
   };
   componentDidMount() {
     const token = localStorage.getItem("token");
     console.log(token);
     const decoded = jwt_decode(token);
     let email = decoded.identity.email;
+    this.setState({ email: email });
     this.api
       .GetAllJobs(email)
       .then(res => {
@@ -53,7 +54,17 @@ class RecruiterPage extends Component {
   }
   InsertIntoList = newJob => {
     console.log("new job fun", newJob);
-    this.setState({ list: this.state.list.concat(newJob), isAdded: true });
+    this.setState({ list: this.state.list.concat(newJob) });
+    this.api
+      .GetAllJobs(this.state.email)
+      .then(res => {
+        console.log("get all job response", res.data);
+        this.setState({
+          list: res.data,
+          isAdded: true
+        });
+      })
+      .catch(err => console.log(err));
   };
   onDelete = id => {
     const token = localStorage.getItem("token");
@@ -77,6 +88,11 @@ class RecruiterPage extends Component {
       pathname: "/recommendations",
       state: { taskid: Task_id, name: Tname }
     });
+  };
+
+  successAdd = () => {
+    this.setState({ isAdded: false });
+    message.success("Task Added");
   };
 
   getjobsList = () =>
@@ -104,7 +120,7 @@ class RecruiterPage extends Component {
             <p>No of employees: {i.cand}</p>
             <Button
               type="primary"
-              onClick={() => this.recommend(i._id, i.job_title, i.jp_email)}
+              onClick={() => this.recommend(i._id, i.job_title)}
               style={{ margin: "0 5px 0 0px" }}
             >
               Recommendations
@@ -125,6 +141,7 @@ class RecruiterPage extends Component {
     console.log("states of recruiter component", this.state);
     return (
       <div>
+        {this.state.isAdded ? this.successAdd() : ""}
         <div>
           <PageHeader className="Appheader">
             <h1>CURRICULUM VITAE RECOMMENDER</h1>
@@ -157,10 +174,13 @@ class RecruiterPage extends Component {
           </PageHeader>
         </div>
         <br />
-        <div>
+        <div style={{ overflow: "auto" }}>
           <Card
             title="Add A Job"
-            style={{ width: "75%", margin: "10px auto 0 auto" }}
+            style={{
+              width: "75%",
+              margin: "10px auto 0 auto"
+            }}
           >
             <AddJob InsertIntoList={this.InsertIntoList} />
           </Card>
@@ -168,7 +188,7 @@ class RecruiterPage extends Component {
             title="My jobs"
             style={{
               width: "95%",
-              margin: "10px auto 0 auto",
+              margin: "10px auto auto auto",
               padding: "5px 0 0 5px"
             }}
           >
